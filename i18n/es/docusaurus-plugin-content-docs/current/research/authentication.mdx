@@ -1,0 +1,28 @@
+---
+title: Autenticación
+section: Research and development
+order: 1
+---
+
+import NLevelAnalytics from '@site/src/components/NLevelAnalytics/index.tsx';
+
+# Autenticación en positive-intentions: Protegiendo tus Interacciones
+<NLevelAnalytics />
+
+En positive-intentions, nuestro enfoque se centra en crear un entorno de comunicación seguro, fluido y amigable para el usuario. Aquí te ofrecemos un análisis más profundo de cómo logramos esto con nuestro proceso de autenticación único.
+
+## Establecimiento de Conexiones Entre Pares
+
+Con la ayuda de PeerJS y peerjs-server, establecemos conexiones directas y seguras entre usuarios. Cada conexión está asociada con una cadena o ID de conexión único y aleatorio. Este ID único sirve como una capa sólida de seguridad, ya que es altamente impredecible.
+
+## Compartiendo IDs de Conexión de Forma Segura
+
+Aunque el ID de conexión proporciona una seguridad significativa, debe ser compartido entre pares para establecer una conexión. Esto podría representar un riesgo si el sistema de un par se ve comprometido. Por lo tanto, recomendamos a los usuarios compartir sus IDs de conexión solo con aquellos en quienes confían. Para mejorar la seguridad, hemos facilitado que los usuarios cambien sus IDs de conexión si sospechan de una vulneración.
+
+## Mejorando la Autenticación
+
+Estamos trabajando constantemente para reforzar nuestro sistema de autenticación. Uno de nuestros planes futuros incluye implementar pares de claves públicas y privadas para cada usuario. Esto servirá como una medida de verificación en casos donde cambie una cadena de conexión. Además, nuestro objetivo es complementar la encriptación proporcionada por WebRTC al encriptar completamente la carga de datos antes de enviarla.
+
+## Priorizando la Seguridad del Usuario
+
+La seguridad del usuario es primordial para nosotros. Entendemos que si bien nuestra arquitectura P2P no permite inherentemente el bloqueo de usuarios, es esencial empoderar a los usuarios con el control sobre sus interacciones. En consecuencia, estamos diseñando un sistema donde los usuarios pueden cambiar sus IDs de conexión, conectarse automáticamente a pares reconocidos y excluir a aquellos bloqueados. Además, estamos explorando formas para que los usuarios puedan informar conductas inapropiadas. Estas características de seguridad están en proceso de desarrollo, y estamos comprometidos en encontrar las mejores soluciones para mantener un entorno seguro y respetuoso para todos.

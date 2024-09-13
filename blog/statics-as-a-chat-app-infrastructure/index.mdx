@@ -1,0 +1,213 @@
+---
+slug: statics-as-a-chat-app-infrastructure
+title: "Enhancing Chat App Infrastructure with Webpack 5 Module Federation and AWS S3"
+authors: [xoron]
+tags:
+  [
+    aws,
+    s3,
+    webpack,
+    module federation,
+    dynamic remotes,
+  ]
+image: ./images/s3.png
+---
+import NLevelAnalytics from '@site/src/components/NLevelAnalytics/index.tsx';
+
+# Enhancing Chat App Infrastructure with Webpack 5 Module Federation and AWS S3
+
+<NLevelAnalytics />
+
+<center>
+![](./images/s3.png)
+</center>
+
+In the rapidly evolving landscape of web development, creating scalable and maintainable applications is a challenge. For our chat application, which is akin to WhatsApp, we’ve embraced a modern approach to infrastructure using Webpack 5 Module Federation and AWS S3. This article delves into our strategy for using these technologies, focusing on transitioning from a traditional setup to a micro frontend architecture and this approach's potential benefits and challenges.
+
+{/* truncate */}
+
+# Transitioning to Webpack 5 Module Federation
+
+## Why Webpack 5?
+
+Webpack 5 introduces Module Federation, a groundbreaking feature that dynamically allows multiple independent builds to share code with each other at runtime. This is a significant shift from traditional monolithic applications where all code is bundled. With Module Federation, our chat app can now leverage micro frontends, modularizing different aspects of the app into separate, independently deployable modules.
+
+## The Move from CreateReactApp
+
+Previously, our app was built using CreateReactApp, which offered a straightforward setup but lacked the flexibility needed for a complex, evolving application. By migrating to Webpack 5, we gain:
+
+Dynamic Module Loading: Modules can be loaded on demand, reducing initial load times and improving performance.
+
+Improved Code Sharing: Common dependencies are shared between modules, reducing redundancy and optimizing bundle sizes.
+
+## Micro frontends Architecture
+
+Our chat application is divided into several micro frontends, each responsible for specific functionalities:
+
+1. Core App: The main interface for user interaction.
+2. Cryptography: Handles encryption and decryption of messages, crucial for maintaining privacy and security.
+
+Each of these micro frontends is hosted independently, allowing for more flexible updates and deployments. This setup improves scalability and provides a modular approach to development and maintenance.
+
+## Leveraging AWS S3 for Hosting
+
+### Why AWS S3?
+
+AWS S3 (Simple Storage Service) hosts static files and assets. It’s a robust solution for serving content with high availability and scalability. Here’s how we’re utilizing AWS S3:
+
+Scalable Storage: S3 can handle large volumes of static assets, ensuring our app remains performant as it grows.
+
+CDN Integration: S3 integrates seamlessly with Amazon CloudFront, a Content Delivery Network (CDN) that distributes content globally, reducing latency and improving load times.
+
+### Domain and Subdomain Management
+
+To manage routing and domain configurations, we use AWS CDK (Cloud Development Kit). This tool helps in defining and provisioning AWS infrastructure utilizing a programming language. Our setup includes:
+
+Core App Domain: `chat.positiveintentions.com`
+
+Cryptography Subdomain: `cryptography.positiveintentions.com`
+
+This separation allows us to deploy and manage each micro frontend independently, simplifying updates and scaling.
+
+## Federated Modules and Dynamic Remote Loading
+
+### Module Federation in Action
+
+Using Webpack 5’s Module Federation, we’ve implemented a system where different modules can be dynamically loaded based on availability and performance. Here’s a breakdown of our approach:
+
+1. Dynamic Remotes: Modules are loaded from various endpoints. We use a custom function to ping different URLs and determine the fastest one for loading the required module.
+2. Promise-based Dynamic Loading: The implementation involves creating a promise-based function that fetches the module from the fastest available URL. This ensures that users get the most responsive experience possible.
+
+
+```javascript
+    const moduleRedundency = ({
+        moduleName,
+        urls
+      }) => (`promise new Promise(async (resolve) => {  
+        const urls = ${JSON.stringify(urls)}
+     
+    function checkUrl(url) {
+          const timestamp = Date.now();
+          return fetch(url, {
+            method: "HEAD",
+            mode: 'no-cors'
+          })
+            .then(res => {
+                return {
+                  url,
+                  ping: Date.now() - timestamp
+                }
+            })
+            .catch(error => null);
+        }
+    
+        const availabilityPromises = urls
+          .map(url =>
+            checkUrl(url)
+          )
+          .filter(url => !!url);
+    
+        // Use Promise.race to find the first URL that responds with an available resource
+        const urlPings = await Promise.all(availabilityPromises)
+          .catch(error => {
+            // Handle the case where none of the URLs are available
+            reject(new Error('None of the URLs responded positively: ' + error.message));
+          });
+      
+        const firstAvailableUrl = urlPings
+          .filter(url => !!url)
+          .reduce((lowest, item) => {
+              return item.ping < lowest.ping ? item : lowest;
+          });
+    
+        const remoteUrlWithVersion = firstAvailableUrl.url;
+        const script = document.createElement('script')
+        script.src = remoteUrlWithVersion
+        script.onload = () => {
+          // the injected script has loaded and is available on window
+          // we can now resolve this Promise
+          const proxy = {
+            get: (request) => window.${moduleName}.get(request),
+            init: (arg) => {
+              try {
+                return window.${moduleName}.init(arg)
+              } catch(e) {
+                console.log('remote container already initialized')
+              }
+            }
+          }
+          resolve(proxy)
+        }
+        // inject this script with the src set to the versioned remoteEntry.js
+        document.head.appendChild(script);
+      })
+      `);
+  
+  
+    const moduleFederationConfig = new ModuleFederationPlugin({
+      name: "p2p",
+      filename: "remoteEntry.js",
+      remotes: {
+        "dim": moduleRedundency({
+          moduleName: 'dim',
+          urls: [
+            'http://localhost:8081/remoteEntry.js', // local for testing
+            'https://positive-intentions.github.io/dim/remoteEntry.js',
+            'https://dim.positive-intentions.com/remoteEntry.js'
+          ]
+        }),
+      },
+    })
+```
+
+## Benefits and Considerations
+
+Flexibility: Selfhosters can manage modules independently, enhancing control over updates and security.
+
+Development Experience: Running modules locally during development speeds up testing and iteration.
+
+Scalability: The approach supports scaling by allowing separate deployment and updates of individual modules.
+
+## The Role of Cryptography and Security
+
+### Cryptography Microfrontend
+
+Our chat app includes a federated module dedicated to cryptography. This module is responsible for encrypting and decrypting messages, ensuring secure communication between users. By isolating this functionality:
+
+Security: Security mechanisms are handled in a dedicated module, reducing the risk of vulnerabilities.
+
+Modularity: Independent updates to cryptographic algorithms can be made without affecting the core app functionality.
+
+## Testing and Feedback
+
+The app is still in development, and we welcome feedback on its functionality and performance. Testing the app across different modules and hosting setups helps us refine its features and ensure robustness.
+
+Testing: Users can access the core app and cryptography module through their respective subdomains and provide feedback on performance and usability.
+
+Future Enhancements: We plan to optimize the app further and explore additional micro frontend modules based on user feedback.
+
+## Conclusion
+
+By leveraging Webpack 5 Module Federation and AWS S3, we’ve taken significant steps toward creating a scalable and modular chat application. Our approach to micro frontends and dynamic module loading enhances flexibility and performance and sets a foundation for future growth and innovation. We invite developers and users to test our app, provide feedback, and join us in refining this exciting project.
+
+## FAQs
+
+1. What is Webpack 5 Module Federation?
+
+Webpack 5 Module Federation allows multiple independent builds to dynamically share code at runtime, facilitating modular architecture and reducing redundancy.
+
+2. How does AWS S3 benefit our chat app?
+
+AWS S3 provides scalable storage for static files, integrates with CDNs for reduced latency, and supports high availability, making it ideal for hosting our chat app.
+
+3. What are micro frontends?
+
+Micro frontends decompose a web application into smaller, independently deployable modules, each responsible for a specific part of the application’s functionality.
+
+4. How does dynamic module loading improve performance?
+
+Dynamic module loading allows for on-demand fetching of modules, reducing initial load times and ensuring that users only load the necessary code when needed.
+
+5. Why is the cryptography module isolated?
+
+The cryptography module is isolated to enhance security and modularity. This allows independent updates and ensures that encryption and decryption are handled securely.

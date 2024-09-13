@@ -1,0 +1,134 @@
+---
+slug: introducing-decentralized-chat
+title: "Introducing Decentralized Chat"
+authors: [xoron]
+tags:
+  [
+    decentralized,
+    chat,
+    app,
+    encryption,
+    privacy,
+    security,
+    webRTC,
+    PWA,
+    JavaScript,
+    virtual reality,
+    image board,
+    augmented reality,
+  ]
+image: ./images/logo.png
+---
+import NLevelAnalytics from '@site/src/components/NLevelAnalytics/index.tsx';
+
+# Introduction to Decentralized Chat
+
+<NLevelAnalytics />
+
+<center>
+![](./images/logo.png)
+</center>
+
+In an age where digital communication is a cornerstone of our daily interactions, the need for privacy and control over personal data has never been more pressing. With this in mind, we are excited to introduce a groundbreaking approach to decentralized communication through our new chat application. This Progressive Web App (PWA), built using JavaScript, offers a unique take on connecting online, emphasizing transparency, collaboration, and community-driven development.
+
+{/* truncate */}
+
+## Key Features
+
+### Encrypted Messaging
+
+The heart of our chat app lies in its commitment to privacy. By utilizing end-to-end encryption, we ensure that your messages remain confidential. This means that only you and the person you're communicating with can read your messages—no one else, not even us. The encryption is achieved using advanced cryptographic techniques implemented directly in your browser. This approach ensures that your communication remains secure and private from sending a message until it is received.
+
+### File Sharing
+
+Sharing files should be as secure as it is easy. Our app leverages WebRTC (Web RealTime Communication) technology and QR codes to facilitate smooth and secure file transfers. WebRTC enables direct peer-to-peer file sharing without intermediary servers, ensuring your files are transmitted directly between devices. QR codes add convenience, allowing for quick and easy file sharing with minimal setup.
+
+### Voice and Video Calls
+
+In addition to text communication, our app supports voice and video calls. Whether connecting with friends, family, or colleagues, you can rely on seamless, high-quality voice and video interactions. This feature is also powered by WebRTC, which provides robust support for real-time communication and ensures that your calls are secure and reliable.
+
+### Shared Virtual Space
+
+Communication can be more engaging when enhanced with virtual environments. Our app includes a shared mixed-reality space where users can interact in a 3D environment. This virtual space offers functionality similar to other mainstream products, allowing users to collaborate, explore, and connect in a more immersive manner.
+
+### Image Board
+
+For those who enjoy sharing and browsing images, our app features an image board inspired by popular platforms like Instagram. This intuitive and scrollable format makes viewing and sharing images with others easy. Whether you share personal photos or visual content related to your interests, the image board offers a seamless and enjoyable experience.
+
+## How It Works
+
+### Self Generated and Managed Encryption
+
+Using modern browser tools, our app lets you create and manage encryption keys directly on your device. These keys function similarly to cookies and encrypt and decrypt your messages. By storing these keys on your device, we ensure only authorized users can access the encrypted data. This approach enhances security and gives you greater control over your encryption keys and data.
+
+### Decentralized Authentication
+
+Authentication in our app is handled through WebRTC, which creates a secure peer-to-peer connection between browsers. This connection allows for directly exchanging encryption keys without needing a central server. When you connect with another user, you can validate their identity by verifying that they have the same encryption keys you shared previously. This decentralized approach eliminates the need for a central authority, enhancing privacy and security.
+
+### Decentralized Profile Management
+
+Our app uses symmetric encryption implemented in JavaScript to protect user profiles. This includes sensitive information such as usernames and avatar images. Encrypting these profile details ensures that your personal information remains secure and private, even when stored on your device.
+
+### Decentralized Encrypted Messaging
+
+Messages, like cookies, are stored in the browser's local storage and can be retained until you clear the site data. Messages are encrypted before transmission and decrypted upon receipt using previously shared encryption keys. This approach, combined with WebRTC's additional layer of security, provides a robust mechanism for secure and private communication.
+
+### Chat Interface
+
+To enhance the user experience, we use Material UI, a popular framework known for its comprehensive set of components. This results in a well-designed, interactive chat interface that makes navigation and communication more intuitive and engaging. The user-friendly interface ensures that you can easily access and manage your conversations.
+
+### Decentralized File Transfer
+
+For handling large files, our app utilizes IndexedDB, a web storage technology that allows storing substantial amounts of data directly on your device. Files stored in IndexedDB can be encrypted using symmetric encryption, ensuring security. WebRTC facilitates the transfer of these files between peers, providing a secure and efficient method for sharing large data.
+
+### Decentralized Virtual Reality
+
+Expanding on virtual environments, our app uses WebGL/WebGPU to create 3D graphics in the browser. This technology enables the creation of immersive virtual reality experiences. WebRTC supports sharing 3D positions and live video streams within this virtual space, allowing users to interact in real-time and texture 3D models with live video feeds.
+
+## Safety and Security
+
+It's important to acknowledge that our app is currently an unstable proof of concept and is still in development. While we strive to provide a secure and encrypted chat experience, the app must undergo professional security reviews. As such, it should not be considered a replacement for existing, established chat services. We present it for testing and demonstration purposes only. An initial version of our [threatmodel document](https://positive-intentions.com) is available for those interested in understanding the potential security considerations.
+
+## Roadmap
+
+Our development journey has just begun, and we have several exciting features planned for the future:
+
+Distributed Profile: We aim to enable a multiplatform chat experience by allowing users to share data across their own devices. This feature would create a seamless chat experience similar to that mainstream messaging apps offer.
+
+WebLLM: Initial investigations suggest that browser-based language models (LLMs) could be feasible. However, they may require significant storage capacity, which could concern many users. We are exploring the possibilities and limitations of this feature.
+
+P2P Group Chat: Basic functionality for peer-to-peer group chat is already in place, but it is currently unstable and requires further refinement. Our goal is to enhance and stabilize this feature for better usability.
+
+Augmented Reality: We have implemented some AR functionality, but much work still needs to be done before it becomes a fully polished feature. We aim to develop AR capabilities that offer practical and engaging experiences.
+
+Decentralized Cloud Storage: Our app's file transfer capabilities could be repurposed into a decentralized cloud storage solution, where the "cloud" consists of your own devices. This approach would leverage WebRTC and IndexedDB to create a secure and distributed storage system.
+
+We are enthusiastic about the potential of this project and are committed to collaborative development to push its boundaries. We invite you to share your thoughts, questions, and feedback in the comments.
+
+## FAQs
+
+1. What is a decentralized chat app?
+
+A decentralized chat app operates without a central server, relying on peer-to-peer connections for messaging, authentication, and data storage. This model enhances privacy and control over personal data by eliminating the need for intermediaries.
+
+2. How does end-to-end encryption work in this app?
+
+End-to-end encryption ensures that messages are encrypted on the sender's device and decrypted only on the recipient's device. This process prevents unauthorized access during transmission, ensuring only intended recipients can read the messages.
+
+3. Can I use this app for voice and video calls?
+
+Yes, the app supports voice and video calls through WebRTC technology. This integration allows for high-quality and secure real-time communication directly from your browser.
+
+4. Is my data safe with this app?
+
+While the app is designed with security features such as encryption, it is currently a proof of concept and has not undergone professional security evaluations. It is intended for testing and demonstration purposes, and users should exercise caution and not rely on it for sensitive communications at this stage.
+
+5. What future features are planned for this app?
+
+Future developments include:
+
+* Enabling multiplatform chat experiences.
+* Exploring browser-based language models.
+* Refining peer-to-peer group chat functionality.
+* Enhancing augmented reality features.
+* Creating decentralized cloud storage solutions.

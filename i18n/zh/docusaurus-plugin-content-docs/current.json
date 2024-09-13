@@ -1,0 +1,22 @@
+{
+  "version.label": {
+    "message": "下一个",
+    "description": "The label for version current"
+  },
+  "sidebar.docsSidebar.category.Basics": {
+    "message": "基础知识",
+    "description": "The label for category Basics in sidebar docsSidebar"
+  },
+  "sidebar.docsSidebar.category.Basics.link.generated-index.description": {
+    "message": "5分钟学会使用聊天应用",
+    "description": "The generated-index page description for category Basics in sidebar docsSidebar"
+  },
+  "sidebar.docsSidebar.category.Features": {
+    "message": "特性",
+    "description": "The label for category Features in sidebar docsSidebar"
+  },
+  "sidebar.docsSidebar.category.Research & Development": {
+    "message": "研究与开发",
+    "description": "The label for category Research & Development in sidebar docsSidebar"
+  }
+}

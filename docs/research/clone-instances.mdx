@@ -1,0 +1,32 @@
+---
+title: Clone instances
+section: Research and development
+order: 4
+---
+
+import NLevelAnalytics from '@site/src/components/NLevelAnalytics/index.tsx';
+
+# Clone Instances
+<NLevelAnalytics />
+
+The clone instances feature allows users to create additional instances of the app on different devices, enabling data synchronization and seamless access across multiple devices.
+
+## How does it work?
+
+1. **PeerJS and PeerJS Server:** We utilize the PeerJS technology and the default PeerJS Server to establish comprehensive data connections for the app.
+
+2. **Purpose of Clone Instances:** Clone instances are designed to align with common functionality provided by other chat apps, allowing users to access their data and chat conversations across multiple devices.
+
+3. **Registration Process:** Users can initiate a clone instance by sharing a link or scanning a QR code provided by the app. Consider adding a 2-factor authentication step for additional verification before confirming the synchronization.
+
+4. **Authentication and Security:** We are actively working on strengthening the authentication system by implementing public key cryptography for peer authentication. This enhancement will result in ephemeral connection strings for secure authentication, which seamlessly integrates with the creation of clone instances.
+
+5. **Data Synchronization:** Clone instances can sync data in real-time, but if a peer is offline, synchronization will occur the next time they connect to the app.
+
+6. **Compatibility:** Clone instances can be created on any supported browser. However, please note that the current browser support for this functionality is limited as we are still in the proof-of-concept stage.
+
+7. **Multiple Clones and Storage:** Users can create multiple clones that act as redundancies for data storage. We are exploring the possibility of making storage location configurable to be exclusively on clone instances.
+
+## Conclusion
+
+The clone instances feature enhances user convenience and accessibility by enabling seamless data synchronization across multiple devices. Please note that as we are in the proof-of-concept stage, there may be limitations and ongoing developments to improve the functionality. Stay tuned for future updates and enhancements.

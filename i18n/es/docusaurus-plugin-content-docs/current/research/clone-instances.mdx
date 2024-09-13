@@ -1,0 +1,31 @@
+---
+section: Research and development
+order: 4
+---
+
+import NLevelAnalytics from '@site/src/components/NLevelAnalytics/index.tsx';
+
+# Clonar Instancias
+<NLevelAnalytics />
+
+La función de clonar instancias permite a los usuarios crear copias adicionales de la aplicación en diferentes dispositivos, lo que posibilita la sincronización de datos y el acceso fluido desde múltiples dispositivos.
+
+## ¿Cómo funciona?
+
+1. **PeerJS y Servidor PeerJS:** Utilizamos la tecnología PeerJS y el Servidor PeerJS por defecto para establecer conexiones completas de datos para la aplicación.
+
+2. **Propósito de las Clonaciones:** Las clonaciones están diseñadas para alinearse con la funcionalidad común proporcionada por otras aplicaciones de chat, permitiendo a los usuarios acceder a sus datos y conversaciones de chat desde múltiples dispositivos.
+
+3. **Proceso de Registro:** Los usuarios pueden iniciar una clonación compartiendo un enlace o escaneando un código QR proporcionado por la aplicación. Considera agregar un paso de autenticación de dos factores para una verificación adicional antes de confirmar la sincronización.
+
+4. **Autenticación y Seguridad:** Estamos trabajando activamente en fortalecer el sistema de autenticación mediante la implementación de criptografía de clave pública para la autenticación entre pares. Esta mejora resultará en cadenas de conexión efímeras para una autenticación segura, que se integra sin problemas con la creación de clonaciones.
+
+5. **Sincronización de Datos:** Las clonaciones pueden sincronizar datos en tiempo real, pero si un par está fuera de línea, la sincronización ocurrirá la próxima vez que se conecten a la aplicación.
+
+6. **Compatibilidad:** Las clonaciones se pueden crear en cualquier navegador compatible. Sin embargo, ten en cuenta que el soporte actual del navegador para esta funcionalidad es limitado, ya que todavía estamos en la etapa de prueba de concepto.
+
+7. **Múltiples Clonaciones y Almacenamiento:** Los usuarios pueden crear múltiples clonaciones que actúan como redundancias para el almacenamiento de datos. Estamos explorando la posibilidad de configurar la ubicación de almacenamiento exclusivamente en las clonaciones.
+
+## Conclusión
+
+La función de clonar instancias mejora la comodidad y accesibilidad del usuario al permitir la sincronización fluida de datos en múltiples dispositivos. Ten en cuenta que, como estamos en la etapa de prueba de concepto, puede haber limitaciones y desarrollos continuos para mejorar la funcionalidad. Mantente atento a futuras actualizaciones y mejoras.

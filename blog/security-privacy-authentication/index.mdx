@@ -1,0 +1,123 @@
+---
+slug: security-privacy-authentication
+title: "Security, Privacy and Authentication"
+authors: [xoron]
+tags:
+  [
+    decentralized,
+    chat,
+    app,
+    encryption,
+    privacy,
+    security,
+    webRTC,
+    PWA,
+    JavaScript,
+    cryptography,
+    hashing
+    sha256
+    military grade encryption
+  ]
+image: ./images/lock.png
+---
+import NLevelAnalytics from '@site/src/components/NLevelAnalytics/index.tsx';
+
+# Security, Privacy and Authentication
+
+<NLevelAnalytics />
+
+<center>
+![](./images/lock.png)
+</center>
+
+In digital communication, security and privacy are the major initials. Our latest project—a chat application built with JavaScript—aims to provide a robust communication platform fortified with military-grade encryption. While we aspire to offer one of the most secure chat experiences available, declaring it "the most secure chat app in the world" might be premature. This article delves into the technology behind our app, current security measures, and the remaining challenges. We also welcome feedback to help refine our approach.
+
+{/* truncate */}
+
+## Understanding the Technology Behind the App
+
+Our chat application incorporates advanced technologies and practices to enhance security and privacy. Here's a closer look at how these features come together:
+
+## Key Features
+
+1. PeertoPeer Encryption
+
+The core of our app's security lies in its peer-to-peer encryption model. We use the PeerJS library to establish an encrypted WebRTC connection between users. This connection is crucial for exchanging encryption keys securely. WebRTC provides a solid security foundation, but our app adds a layer of encryption using the browser's native cryptographic functions. These algorithms are designed to be user-friendly and interchangeable, making it easier to adapt and upgrade encryption methods. You can explore the [encryption algorithms here](https://positive-intentions.com).
+
+2. Open Source for Transparency
+
+We understand that some critics argue that "JavaScript is inherently insecure." We believe this is a misconception and have taken steps to address these concerns—our open-source cryptography module functions as a thin wrapper around the browser's native crypto functions.
+
+3. SelfHosting for Control
+
+One significant concern with Progressive Web Apps (PWAs) is the risk of developers introducing malicious code. To mitigate this risk, we've made the project open-source and provided comprehensive instructions for self-hosting. Users can host the app for free on GitHub Pages, with detailed guidance in the README. We are also working on enabling users to self-host federated modules, which adds another layer of flexibility and control. For more information on self-hosting and the federated modules, see [this guide](https://positive-intentions.com).
+
+4. Security Measures
+
+To further safeguard against unauthorised code execution, the app employs strict Content Security Policy (CSP) headers. CSP headers are designed to prevent the injection of malicious scripts by specifying which content sources are trusted. If you are self-hosting the app, it is crucial to configure these headers correctly to ensure the security of your deployment.
+
+## Encryption Keys Validation
+
+<div style={{textAlign: 'center'}}>
+<iframe width="100%" height="315px" style={{maxWidth: '560px'}} src="https://www.youtube-nocookie.com/embed/npmnME8KdQY?si=3mla6b17Kjyl0zdt" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
+To enhance security, we are exploring methods for validating a peer's public key to protect against man-in-the-middle (MITM) attacks and other key compromises. Here's an overview of our proposed approach:
+
+1. Initial Key Exchange
+
+The initial key exchange process involves exchanging public keys between users. This process ensures both parties have the necessary keys to establish a secure connection.
+
+2. Public Key Hashing
+
+User A generates a hash of User B's public key. This hash serves as a fingerprint of the public key and is used to verify its authenticity.
+
+3. Hash Exchange
+
+User A sends the generated hash to User B via a trusted medium. This step ensures that the hash is transmitted securely.
+
+4. Validation
+
+User B generates their public key hash and inputs the hash received from User A into a verification field. If the hash matches, User B receives a confirmation response. This process can be repeated for User A to validate User B's key. This validation method helps protect against MITM attacks and ensures the integrity of the encryption keys.
+
+## Comparisons and Future Plans
+
+Signal and Simplex are notable examples of robust solutions in the landscape of secure communication protocols. While these protocols offer strong security features, our app's simplicity could also be advantageous. For instance, our demo todo app showcases a decentralized list that's reasonably secure. Implementing a DiffieHellmanstyle key exchange in this context could enhance security while maintaining ease of use.
+
+## Unique Approach
+
+What sets our approach apart is its flexibility. As a web app, users can choose any device, operating system, or browser, offering flexibility unmatched by other platforms. This flexibility is a core principle of our design, aiming to provide a versatile and secure communication tool.
+
+## Aiming for True Privacy and Security
+
+Our ultimate goal is to create a chat system with "the fewest moving parts," allowing for true peer-to-peer (P2P) communication without reliance on mandatory service providers, including ourselves. This approach offers a high level of privacy and security by enabling both the front and back end to be hosted independently. While we are still working towards this goal, we believe that this model could lead to a more secure and private chat system. A trusted VPN could also enhance security, as discussed in [this article](https://positive-intentions.com).
+
+## Threat Model
+
+We have developed a threat model for the app that outlines potential threats and the strategies we plan to mitigate them. This document is an important resource for understanding the security considerations associated with our app. We welcome feedback on the threat model and any other aspects of the app to improve its security and functionality.
+
+## Conclusion
+
+While many similar apps exist, ours takes a distinctly different approach, particularly in its focus on security practices for P2P technology. It is important to note that this app is currently an experimental proof of concept and is not yet suitable for replacing existing apps or services. It is provided for testing and demonstration purposes only. We appreciate any feedback and insights from the community to help us refine and enhance the app.
+
+## FAQs
+
+1. How does the app ensure secure communication?
+
+The app uses peer-to-peer encryption through WebRTC and additional cryptographic measures to secure communication. Keys are exchanged securely using a method similar to Diffie-Hellman, and the browser's native crypto functions manage encryption.
+
+2. Is the code for the app available for review?
+
+Yes, the app's code is open source. This transparency allows the community to review, audit, and contribute to its development. The cryptography module, in particular, is available for public review to address concerns about JavaScript security.
+
+3. Can I selfhost the app?
+
+Absolutely. The app is designed for self-hosting, and detailed instructions are provided for deploying it on platforms like GitHub Pages. We also work on features allowing users to self-host federated modules for greater flexibility.
+
+4. What steps are being taken to prevent MITM attacks?
+
+To protect against man-in-the-middle attacks, we implement a public key validation process involving hashing and exchanging public key hashes between users. This method helps ensure the authenticity of encryption keys.
+
+5. Is the app ready for production use?
+
+The app is an experimental proof of concept and has yet to be ready to replace existing communication apps or services. It is provided for testing and demonstration purposes, and we are actively seeking feedback to improve its security and functionality.

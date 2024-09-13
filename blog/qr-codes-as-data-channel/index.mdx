@@ -1,0 +1,72 @@
+---
+slug: qr-codes-as-a data-channel
+title: QR Codes as a Data Channel
+authors: [xoron]
+tags:
+  [
+  ]
+image: ./images/qr.png
+---
+
+import NLevelAnalytics from '@site/src/components/NLevelAnalytics/index.tsx';
+
+
+# QR Codes as a Data Channel
+<NLevelAnalytics />
+
+<center>
+![](./images/qr.png)
+</center>
+
+In our ongoing quest to enhance the decentralized capabilities of our chat application, we're excited to introduce an experimental feature: "File Sharing by QR Code". This innovative approach leverages JavaScript-based QR code reading and writing functionality to transfer data without relying on traditional network connections.
+
+{/* truncate */}
+
+## How It Works
+
+Our proof-of-concept utilizes two key React libraries:
+
+1. `react-qr-code`: For generating QR codes
+2. `react-qr-scanner`: For reading QR codes
+
+The process works as follows:
+
+1. **File Import**: When a user imports a file, our JavaScript code serializes and splits the data into manageable chunks.
+2. **QR Code Generation**: Each chunk of data is converted into a QR code.
+3. **QR Code Display**: The application displays a series of QR codes representing the entire file.
+4. **QR Code Scanning**: The recipient uses their device to scan each QR code in sequence.
+5. **File Reconstruction**: After scanning all QR codes, the recipient's device has the necessary metadata to reconstruct the file locally from memory.
+
+You can test this functionality at [https://chat.positive-intentions.com/#/qr](https://chat.positive-intentions.com/#/qr).
+
+## Current Limitations
+
+While innovative, this method has some practical limitations:
+
+- **Speed**: The process is relatively slow, especially for larger files.
+- **File Size**: Files larger than 5KB become cumbersome to transfer using this method.
+- **User Experience**: The current implementation needs more refinement to be user-friendly.
+
+## Potential Use Cases
+
+Despite these limitations, we see potential in this technology, particularly for:
+
+1. **Offline WebRTC Connection**: Exchanging WebRTC connection data when an internet connection is unavailable.
+2. **Secure Key Exchange**: Transferring encryption keys or other sensitive data without using a network.
+3. **Device Pairing**: Facilitating secure device pairing in IoT scenarios.
+4. **Offline Message Exchange**: Sending short messages or commands between devices without network connectivity.
+
+## Future Improvements
+
+We're considering several enhancements to make this feature more practical:
+
+1. **Optimization**: Improving the encoding and decoding processes for faster transfers.
+2. **Error Correction**: Implementing robust error checking and correction mechanisms.
+3. **Progressive Loading**: Allowing partial file reconstruction as QR codes are scanned.
+4. **UI/UX Enhancements**: Creating a more intuitive and user-friendly interface for the QR code sharing process.
+
+## Conclusion
+
+While "File Sharing by QR Code" may not replace traditional file transfer methods, it represents an exciting step towards truly decentralized, offline data exchange. We're eager to explore its potential applications and refine the technology based on user feedback and real-world testing.
+
+We invite you to try out this experimental feature and share your thoughts on how we can improve and expand its functionality. Your input is crucial as we continue to push the boundaries of decentralized communication.
