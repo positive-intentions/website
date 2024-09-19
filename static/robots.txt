@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://positive-intentions.com/sitemap.xml
+
+Disallow: /search/
+Disallow: /tags/
+Disallow: /404
