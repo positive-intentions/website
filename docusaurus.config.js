@@ -218,6 +218,10 @@ const config = {
                 label: 'PWA boilerplate',
                 href: 'https://github.com/positive-intentions/frontend-base',
               },
+              {
+                label: 'Dim',
+                href: 'https://github.com/positive-intentions/dim',
+              },
             ],
           },
           {
