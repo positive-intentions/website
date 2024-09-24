@@ -29,17 +29,19 @@ import NLevelAnalytics from "@site/src/components/NLevelAnalytics/index.tsx";
 
 <center>![](./images/dim.png)</center>
 
-Modern JavaScript frameworks like React and Vue have popularized functional and declarative approaches to web development. While these frameworks have made creating dynamic web applications more accessible, it's worth exploring the potential of web components in this evolving landscape. Lit, with its minimalistic and declarative approach, stands out as an appealing base for leveraging web components in modern frontend development.
+Modern JavaScript frameworks like React and Vue have popularized functional and declarative approaches to web development. While these frameworks have made creating dynamic web applications more accessible, it's worth exploring the potential of web components in this landscape. Lit, with its minimalistic and declarative approach, stands out as an appealing base for leveraging web components in modern frontend development.
 
 {/* truncate */}
 
-In this guide, we'll explore the step-by-step process of creating a UI framework for web components that leverages a functional reactive programming style. We'll start by creating a set of custom hooks that mirror React's hook system. We'll then implement these hooks within a Lit-based web component library. By the end of this tutorial, you'll have hands-on experience constructing a fully functional todo list application using Lit and our custom hooks. This practical approach will demonstrate how to combine the best of modern frontend frameworks with the native capabilities of web components, offering a powerful and flexible solution for your web development projects.
+In this guide, we'll explore the step-by-step process of creating a UI framework for web components that leverages a functional reactive programming style. We'll start by creating a set of custom hooks that mirror React's hook system. We'll then implement these hooks within a Lit-based web component library. This practical approach will demonstrate how to combine the best of modern frontend frameworks with the native capabilities of web components, offering a powerful and flexible solution for your web development projects.
+
+---
 
 ## What are Web Components?
 
 Web components are a set of standardized web platform APIs that allow developers to create reusable and encapsulated HTML elements. They enable developers to define new HTML tags, encapsulate their functionality, and reuse them across different web applications.
 
-## A Custom define Function with Lit
+## A Custom define() Function with Lit
 
 Embarking on our exploration of web components through the Lit library, an essential step is understanding how we can bridge the gap between the traditional object-oriented class components and a more functional approach. To achieve this, let's craft a bespoke define function. This function aims to simplify the process of defining new web components, enabling developers to leverage functional components within the Lit framework, thus combining the best of both worlds.
 
@@ -67,17 +69,17 @@ export function define({ tag, component: CustomFuntionalComponent }) {
 
 The define function serves as a utility to create and register custom elements with the browser, encapsulating the complexity of class-based components in favor of a functional design pattern. Here’s a step-by-step breakdown of how the function operates:
 
-**Importing LitElement:** We begin by importing LitElement from the lit package, the core class that all Lit elements extend from. This import is crucial as it provides the foundational web component functionalities that our custom components will inherit.
+- **Importing LitElement:** We begin by importing LitElement from the lit package, the core class that all Lit elements extend from. This import is crucial as it provides the foundational web component functionalities that our custom components will inherit.
 
-**Function Definition:** The define function is declared with a single parameter — an object that includes tag, the custom element’s name, and component, a functional component that defines the element’s behavior and rendering logic.
+- **Function Definition:** The define function is declared with a single parameter — an object that includes tag, the custom element’s name, and component, a functional component that defines the element’s behavior and rendering logic.
 
-**Creating a Custom Class:** Inside the function, we define a new class CustomComponent that extends LitElement. This class will serve as the blueprint for our custom element, encapsulating the functional component’s logic within the render method of a LitElement class.
+- **Creating a Custom Class:** Inside the function, we define a new class CustomComponent that extends LitElement. This class will serve as the blueprint for our custom element, encapsulating the functional component’s logic within the render method of a LitElement class.
 
-**The Render Method:** Within CustomComponent, the render method is where the magic happens. It begins by extracting all attributes from the element and consolidating them into an object. This process involves iterating over the element’s attributes and accumulating their names and values, making them easily accessible to our functional component.
+- **The Render Method:** Within CustomComponent, the render method is where the magic happens. It begins by extracting all attributes from the element and consolidating them into an object. This process involves iterating over the element’s attributes and accumulating their names and values, making them easily accessible to our functional component.
 
-**Invoking the Functional Component:** With the attributes collected, the render method then calls the CustomFuntionalComponent, passing in the attributes, the element’s inner HTML (as children), and a reference to the component instance itself. This step effectively bridges the gap between the class-based nature of LitElement and the functional approach, allowing developers to define the component’s UI and behavior in a functional manner.
+- **Invoking the Functional Component:** With the attributes collected, the render method then calls the CustomFuntionalComponent, passing in the attributes, the element’s inner HTML (as children), and a reference to the component instance itself. This step effectively bridges the gap between the class-based nature of LitElement and the functional approach, allowing developers to define the component’s UI and behavior in a functional manner.
 
-**Registering the Custom Element:** Finally, the function concludes by registering the custom element with the browser’s Custom Elements Registry through window.customElements.define, associating the specified tag with our CustomComponent class.
+- **Registering the Custom Element:** Finally, the function concludes by registering the custom element with the browser’s Custom Elements Registry through window.customElements.define, associating the specified tag with our CustomComponent class.
 
 #### Practical Usage
 
@@ -94,25 +96,46 @@ define({
 
 By encapsulating the component definition logic, this utility function not only enhances the development experience but also promotes a functional programming style in the context of web components. It empowers developers to focus on the functional aspects of their components — such as props, state, and rendering logic — without being bogged down by the boilerplate code often associated with class-based components.
 
+---
+
 ## Creating a custom useState hook
 
 In the pursuit of enhancing web components with reactive state management capabilities akin to those found in React, we can introduce a custom useState function. This approach allows developers to manage state within Lit-based components more intuitively, drawing inspiration from the familiar hooks pattern popularized by React. This section will delve into the mechanics of the useState function, demonstrating how it facilitates state management in a functional programming context.
+
+```javascript
+export function useState(initialState, component, id) {
+  // Define a unique property name for each state variable
+  const propName = `state-${id}`;
+
+  component[propName] = component[propName] ?? initialState;
+
+  const setState = (newState) => {
+  const currentValue = component[propName];
+  const newValue = typeof newState === 'function' ? newState(currentValue) : newState;
+
+    component[propName] = newValue;
+    component.requestUpdate();
+  };
+
+  return [() => component[propName], setState];
+}
+```
 
 ### Overview of the useState Function
 
 The useState function is designed to mimic React’s useState hook, providing a way to declare state variables in functional components. This custom function underscores a shift towards a more reactive and functional approach within the context of web components, particularly those built using the Lit library. Here’s a closer look at how it functions:
 
-**State Initialization:** The function accepts an initialState value, which sets the starting state, along with a component reference (typically a LitElement instance) and a unique id to ensure that each state variable is distinct.
+- **State Initialization:** The function accepts an initialState value, which sets the starting state, along with a component reference (typically a LitElement instance) and a unique id to ensure that each state variable is distinct.
 
-**Unique Property Naming:** To avoid conflicts and ensure that each state variable is uniquely identifiable, the function constructs a property name using the provided id. This property name (propName) follows the format `state-${id}`, creating a dedicated namespace for each state within the component.
+- **Unique Property Naming:** To avoid conflicts and ensure that each state variable is uniquely identifiable, the function constructs a property name using the provided id. This property name (propName) follows the format `state-${id}`, creating a dedicated namespace for each state within the component.
 
-**State Storage and Retrieval:** The component’s state is stored directly on the component instance using the unique property name. If the state variable has not been initialized, it’s set to the initialState. This design allows the state to be preserved across renders, ensuring consistency and reactivity.
+- **State Storage and Retrieval:** The component’s state is stored directly on the component instance using the unique property name. If the state variable has not been initialized, it’s set to the initialState. This design allows the state to be preserved across renders, ensuring consistency and reactivity.
 
-**Setting State:** The setState function provides a mechanism to update the state. It accepts a new state value or a function that returns a new state value based on the current state. This flexibility supports both direct state updates and updates based on the previous state, mirroring React’s useState functionality.
+- **Setting State:** The setState function provides a mechanism to update the state. It accepts a new state value or a function that returns a new state value based on the current state. This flexibility supports both direct state updates and updates based on the previous state, mirroring React’s useState functionality.
 
-**Re-render Triggering:** Upon updating the state, setState calls component.requestUpdate(), which is a LitElement method that requests the component to re-render. This process ensures that changes in state are reflected in the component’s UI, maintaining a reactive data flow.
+- **Re-render Triggering:** Upon updating the state, setState calls component.requestUpdate(), which is a LitElement method that requests the component to re-render. This process ensures that changes in state are reflected in the component’s UI, maintaining a reactive data flow.
 
-**State Access and Modification:** The function returns a tuple containing a getter function for accessing the current state and the setState function for updating it. This pattern provides a concise and intuitive interface for state management within the component.
+- **State Access and Modification:** The function returns a tuple containing a getter function for accessing the current state and the setState function for updating it. This pattern provides a concise and intuitive interface for state management within the component.
 
 ### Practical Implementation
 
@@ -141,6 +164,8 @@ define({
 ```
 
 In this example, useState is used to declare a count state variable within MyFunctionalComponent. The state can be accessed and updated using the getter count() and the setter setCount, respectively, facilitating a reactive and declarative approach to state management.
+
+---
 
 ## Creating a Custom useEffect Hook
 
@@ -186,15 +211,15 @@ export function useEffect(effectCallback, dependencies, component, id) {
 
 The useEffect function is designed to watch for changes in a specified set of dependencies and execute a callback function (effectCallback) when any of those dependencies change. This mechanism allows developers to encapsulate side-effect logic in a declarative and isolated manner, improving code organization and reusability. Here’s how it works:
 
-**Effect Identification:** Each effect is associated with a unique id to prevent conflicts and ensure correct dependency tracking. The effect’s metadata, including its dependencies and any cleanup function, is stored on the component instance using a property named `effect-${id}`.
+- **Effect Identification:** Each effect is associated with a unique id to prevent conflicts and ensure correct dependency tracking. The effect’s metadata, including its dependencies and any cleanup function, is stored on the component instance using a property named `effect-${id}`.
 
-**Dependency Tracking:** Upon invocation, useEffect checks whether the dependencies have changed since the last render by comparing the current dependencies with the previously stored ones. This check ensures that the effect callback is only executed when necessary, optimizing performance and preventing unnecessary side effects.
+- **Dependency Tracking:** Upon invocation, useEffect checks whether the dependencies have changed since the last render by comparing the current dependencies with the previously stored ones. This check ensures that the effect callback is only executed when necessary, optimizing performance and preventing unnecessary side effects.
 
-**Executing the Effect Callback:** If the dependencies have changed, the function executes the effectCallback. This callback can optionally return a cleanup function, which is designed to perform any necessary cleanup actions when the component is destroyed or when the effect needs to re-run due to dependency changes.
+- **Executing the Effect Callback:** If the dependencies have changed, the function executes the effectCallback. This callback can optionally return a cleanup function, which is designed to perform any necessary cleanup actions when the component is destroyed or when the effect needs to re-run due to dependency changes.
 
-**Cleanup Function Management:** The returned cleanup function, if any, is stored within the effect’s metadata on the component. This function is called to clean up the previous effect before executing the effect callback again or when the component is disconnected from the DOM, ensuring that side effects are managed cleanly and efficiently.
+- **Cleanup Function Management:** The returned cleanup function, if any, is stored within the effect’s metadata on the component. This function is called to clean up the previous effect before executing the effect callback again or when the component is disconnected from the DOM, ensuring that side effects are managed cleanly and efficiently.
 
-**Lifecycle Integration:** useEffect integrates with the LitElement lifecycle by utilizing the addController method. This integration ensures that cleanup functions are called at the appropriate time, specifically when the component is disconnected from the DOM, preventing memory leaks and other side effect-related issues.
+- **Lifecycle Integration:** useEffect integrates with the LitElement lifecycle by utilizing the addController method. This integration ensures that cleanup functions are called at the appropriate time, specifically when the component is disconnected from the DOM, preventing memory leaks and other side effect-related issues.
 
 ### Example Usage
 
@@ -233,6 +258,8 @@ define({
 
 In this example, useEffect is used to set up a timer that logs a message to the console every second. The empty dependencies array ([]) indicates that the effect should run once when the component mounts, and the cleanup function clears the interval when the component unmounts or the effect needs to re-run, showcasing how to manage side effects cleanly and efficiently in a functional component.
 
+---
+
 ## Creating a custom useMemo Hook
 
 Optimizing performance in web applications often involves minimizing unnecessary computations, especially those that are costly and do not need to be recalculated on every render. Inspired by React's useMemo hook, we can introduce a custom useMemo function tailored for web components. This function is particularly useful in scenarios where certain calculations are dependent on specific values and only need to be recomputed when those values change. By leveraging useMemo, developers can ensure that their components remain efficient and responsive, even in complex applications.
@@ -267,13 +294,13 @@ export function useMemo(calculation, dependencies, component, id) {
 
 The useMemo function is designed to memoize or cache a computed value based on a set of dependencies. It checks if the dependencies have changed since the last computation; if they haven’t, it returns the cached value instead of recalculating it. This mechanism significantly reduces the performance overhead for expensive calculations that depend on specific props or state but don’t need to be run on every component update. Here’s an in-depth look at how useMemo operates:
 
-**Memoization Setup:** Upon invocation, useMemo initializes or updates a memoization object on the component instance, identified by a unique id. This object stores the memoized value and its dependencies.
+- **Memoization Setup:** Upon invocation, useMemo initializes or updates a memoization object on the component instance, identified by a unique id. This object stores the memoized value and its dependencies.
 
-**Dependency Check:** It then determines whether the dependencies have changed since the last time the memoized value was calculated. This check is crucial for deciding whether to reuse the cached value or compute a new one.
+- **Dependency Check:** It then determines whether the dependencies have changed since the last time the memoized value was calculated. This check is crucial for deciding whether to reuse the cached value or compute a new one.
 
-**Recomputing the Value:** If any dependency has changed (or if it’s the first run), useMemo recalculates the value by executing the provided calculation function. The newly computed value is stored along with the current dependencies for future reference.
+- **Recomputing the Value:** If any dependency has changed (or if it’s the first run), useMemo recalculates the value by executing the provided calculation function. The newly computed value is stored along with the current dependencies for future reference.
 
-**Returning the Memoized Value:** Finally, useMemo returns the current memoized value, whether it was just recalculated or retrieved from the cache. This value can then be used within the component without the performance penalty of unnecessary recalculations.
+- **Returning the Memoized Value:** Finally, useMemo returns the current memoized value, whether it was just recalculated or retrieved from the cache. This value can then be used within the component without the performance penalty of unnecessary recalculations.
 
 ### Example Implementation
 
@@ -308,6 +335,8 @@ define({
 ```
 
 In this example, useMemo is used to cache the result of an expensive calculation that only needs to be recomputed when prop1 or prop2 changes. This approach ensures that the calculation is only performed when necessary, preserving component performance and responsiveness.
+
+---
 
 ## Refinement
 
@@ -369,6 +398,8 @@ export function useState(initialState) {
 }
 ```
 
+---
+
 ## Scoped components
 
 Its important in web developerment that developers can compose their components in a way that they can be reused in different contexts. When using **_customElements_** , the [shadow dom](https://developer.mozilla.org/en-US/docs/Web/API/Web_components/Using_shadow_DOM) is a powerful tool to encapsulate the styling and behavior of a component. However, sometimes we want to share styles and behavior across multiple components.
@@ -411,7 +442,7 @@ render() {
 ### The useScope Hook Explained
 
 The useScope function takes an object called elements as its parameter. This object contains key-value pairs where each key represents the tag name of the custom element, and the corresponding value is the element's class (the custom element definition). This allows the function to programmatically register multiple custom elements within a single component.
-Inside the loop, it checks whether the custom element with the specified key (tag name) has already been defined in the customElements registry using customElements.get(key). If it hasn't been defined, it calls define() (as created in my previous article) to register the custom element with a unique tag for this instance of the component. The define function is the same one we created in the previous article to define custom elements.
+Inside the loop, it checks whether the custom element with the specified key (tag name) has already been defined in the customElements registry using customElements.get(key). If it hasn't been defined, it calls define() (as created earlier) to register the custom element with a unique tag for this instance of the component.
 
 The key idea here is that by dynamically registering custom elements in this scoped manner, developers can create reusable components without worrying about naming conflicts or polluting the global custom elements registry. Each custom element can be scoped specifically to the component using it, allowing for greater flexibility and modularity across different parts of the application.
 
@@ -459,9 +490,9 @@ render() {
 }
 ```
 
-### The useStyle Hook Explained
-
 ---
+
+### The useStyle Hook Explained
 
 The **_useStyle_** function takes a **_CSSResult_** object as its parameter, which is generated using the [css function from the lit-element library.](https://lit.dev/docs/components/styles/) This **_CSSResult_** object contains the CSS rules that need to be applied to the component.
 
@@ -508,6 +539,8 @@ render() {
     `;
 }
 ```
+
+---
 
 ### The useLazyScope Hook Explained
 
@@ -605,6 +638,8 @@ render() {
 ```
 
 While this approach is not perfect for all use cases, it provides a starting point for dynamically loading custom elements with shared dependencies and optimizing the loading process to suit their specific requirements.
+
+---
 
 ## Conclusion
 
