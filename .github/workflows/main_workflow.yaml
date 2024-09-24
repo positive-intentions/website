@@ -1,11 +1,11 @@
-name: 'Deploy to Staging'
+name: "Deploy to Staging"
 
 on:
   push:
     branches:
       - main
 
-jobs: 
+jobs:
   trigger_workflow:
     runs-on: ubuntu-latest
     steps:
@@ -24,7 +24,7 @@ jobs:
       #     # A file, directory or wildcard pattern that describes what to upload
       #     # Required.
       #     path: Frontend
-      
+
       #     # If true, an artifact with a matching name will be deleted before a new one is uploaded.
       #     # If false, the action will fail if an artifact for the given name already exists.
       #     # Does not fail if the artifact does not exist.
@@ -34,7 +34,7 @@ jobs:
         uses: convictional/trigger-workflow-and-wait@v1.6.1
         with:
           owner: positive-intentions
-          repo: chat-app
+          repo: aws-site
           github_token: ${{ secrets.ACTIONS_KEY }}
           workflow_file_name: child_workflow.yml
           ref: main
@@ -42,4 +42,3 @@ jobs:
           propagate_failure: true
           trigger_workflow: true
           wait_workflow: true
-          
