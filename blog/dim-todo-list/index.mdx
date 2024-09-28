@@ -19,12 +19,11 @@ tags:
     "polymer",
   ]
 image: ./images/dim.png
-unlisted: true
 ---
 
 import NLevelAnalytics from "@site/src/components/NLevelAnalytics/index.tsx";
 
-# Dim: Functional Web Components
+# Dim: Todo list With Functional Web Components
 
 <NLevelAnalytics />
 
@@ -32,7 +31,11 @@ import NLevelAnalytics from "@site/src/components/NLevelAnalytics/index.tsx";
 
 I'm working on creating something I can call "functional web components".
 
-Following the previous article explaining how we create functional web components, we have the basics to put together a basic web app. I wanted to create a basic example of how it could be used and fix things along the way. The following is the result of that.
+Following the [previous article](https://positive-intentions.com/blog/dim-functional-webcomponents) explaining how we can create functional web components, we have the basics to put together an app. I wanted to create a basic example of how it could be used and fix things along the way. The following is the result of that.
+
+{/* truncate */}
+
+A Todo list app is can be a good example of how to demonstrate the functionality of the library. We will create a todo list app using the functional web components we created in the previous article. We will use the hooks we created to manage the state of the todo list. We will create a todo list component that will render a list of todos. We will use what we created in the previous article to render the todo list.
 
 You will need an HTML page to import the script and use the component.
 
@@ -49,9 +52,39 @@ You will need an HTML page to import the script and use the component.
 </html>
 ```
 
-lets create a todo list with functional web components. i will try to explain the implementation and decisions made as we go. We will use the hooks we created in the previous articles to manage the state of the todo list.
+---
 
-i will start creating the base todo list component.
+## Refresher
+
+Lets have a quick refresher of the functionality created in the previous article. If youre familiar with react, this should be familiar to you.
+
+- `useState`: Is a hook that allows us to manage state in the component. It returns an array with the current state and a function to update the state. We can also pass an initial value to the state. It works similarly to React's `useState`.
+
+- `useEffect`: Is a hook that allows us to run side effects in the component. It takes a function and an array of dependencies. If the dependencies change, the function will be called again. This is a way to run side effects in the component.
+
+- `useStyle`: Is a hook that allows us to add styles to the component. It takes a CSS template literal and adds it to the shadow DOM of the component. This is a way to encapsulate styles to the component.
+
+- `useMemo`: Is a hook that allows us to memoize the result of a function. It takes a function and an array of dependencies. If the dependencies change, the function will be called again. This is a way to optimize the rendering of the component.
+
+- `useScope`: Is a hook that allows us to introduce components to the scope of the component. This is a way to share components between components.
+
+- Rendering: Rendering is currently done using functionality provided by LitElement. It takes a template literal and renders the HTML to the component. It also creates watchers and event listeners for the template.
+
+- `define()`: Is a function that allows us to define a web component. It takes an object with the tag name of the component, the functional component itself and any dependencies that should be shared down the component render tree.
+
+Note: While we have props described in a similar way to react, dim functional components also have a second argument, which contains all the shared dependencies. This is being investigated to see if this is a funtional way of introducing shared dependencies to web components. This allows us to share state and other dependencies between components. (The theory is, by doing this, we can serialize functions to strings in a way that we can then use for something like vanillaJS module federation.)
+
+---
+
+## Todo List component
+
+{/* lets create a todo list with functional web components. i will try to explain the implementation and decisions made as we go. We will use the hooks we created in the previous articles to manage the state of the todo list.
+
+i will start creating the base todo list component. */}
+
+Lets start by creating a simple todo list web component. We will create a todo list component that will render a list of todos. We will use what we created in the previous article to render the todo list.
+
+We can start by creating a simple todo list component.
 
 ```javascript
 import { html } from "./mini-lit.js";
@@ -69,9 +102,13 @@ define({ tag: "todo-app", component: Todo });
 
 ```
 
-this is a simple component that will render a title. we are using the `define` function to register the component with the browser.
+In this example we are creating a simple web component. We are rendering a div with an h1 tag. Using the `define` function we previsously created, we can set the tag-name of the component and the component itself. We need the `html` function to create the template for the component. The implementation is from [LitElement](https://lit.dev/docs/v1/lit-html/template-reference/).
 
-now lest create an input form for the todo list.
+---
+
+## Input Form
+
+Now lets create an input form to add todos to the list. We will use what we created in the previous article to manage the state of the input form.
 
 ```javascript
 const AddItemForm = ({ onAdd }, { useState, useStyle, html, css }) => {
@@ -121,22 +158,9 @@ const AddItemForm = ({ onAdd }, { useState, useStyle, html, css }) => {
 export default AddItemForm;
 ```
 
-here we see a more complicated component. so lets break it down
+In this example we are creating an input form to add todos to the list. We use the `useState` hook to manage the state of the input form and the `useStyle` hook to add styles to the component. We render an input field and two buttons. Event listeners are added to the input field and buttons to handle user input.
 
-
-shared dependencies: while we have props described in a similar way to react, we also have a second argument that is a way to introducing shared dependencies to the component. this is a way to share state and other dependencies between components. this is a decision made while developing to allow for something i want to work on in a future article. by doing this, we can serialize functions to strings in a way that we can then use for something like vanillaJS module federation.
-
-useState: this is a hook that allows us to manage state in the component. it returns an array with the current state and a function to update the state. we can also pass an initial value to the state. it works similarly to react's useState.
-
-useStyle: this is a hook that allows us to add styles to the component. it takes a css template literal and adds it to the shadow dom of the component. this is a way to encapsulate styles to the component.
-
-html: this is a function that allows us to create html templates. it is similar to lit-html. by using this, we can create html templates that can be rendered by the component and it will automatically create watchers and event listeners for the template. (check out the Lit elements docs for more details: https://lit.dev/docs/v1/lit-html/introduction/)
-
-
-
-
-
-now lets introduce the input form to the todo list component.
+Lets add the `AddItemForm` into the todo list component. We can update the file like the following:
 
 ```javascript
 import { html, css } from "./mini-lit.js";
@@ -175,18 +199,23 @@ define({
 });
 ```
 
-importing the hooks: we import the hooks we need to use in the component. this is a way to share the hooks between components. this is a decision made to allow for a future feature i want to work on. by doing this we can sanbox the hooks and share them between components down the render tree.
+Lets breakdown whats going on:
 
-useScope: this is a hook that allows us to introduce components to the scope of the component. this is a way to share components between components.
+- Importing the hooks: We import the hooks we need to use in the component and pass it down in the `define` function to make it available for all sub components.
 
-useMemo: this is a hook that allows us to memoize the result of a function. it takes a function and an array of dependencies. if the dependencies change, the function will be called again. this is a way to optimize the rendering of the component. in this example it is used to calculate the number of todo items. if the todos change, the function will be called again. in a "real-world" example, this could be used to do more heavier calculations.
+- useScope: This is a hook that allows us to introduce other dim components to the scope of the component. This is a way to create reusable web components.
 
-addTodo: this is a function that will add a todo to the list. it takes a todo as an argument and adds it to the list of todos. this should work like you would expect in react.
+- useMemo: This is a hook that allows us to memoize the result of a function. It takes a function and an array of dependencies. If the dependencies change, The function will be called again. This is a way to optimize the rendering of the component. In this example it is used to calculate the number of todo items. If the todos change, the function will be called again. in a "real-world" example, this could be used to do more heavier calculations.
 
-introducing the tag: we introduce the tag of the component we want to use in the scope of the component. this is a way to introduce the component to the scope of the component. you will ntoice that we are passing the `addTodo` function as a prop inside an attribute `.props` to the `add-item-form` component. web components do not allow for passing functions as props, so we have to pass it as an attribute and then use it inside the component. when using Dim you can pass a function as a prop by using the `.props` attribute. if we take a look at lit elements, it automatically create watchers for the props as defined in its static property (https://lit.dev/docs/components/properties/). this means if we use props like normal, the component wont be able to listen for changes. as part of this project, i explicitly created a property `props` that will be used to watch for changes in the undelying implementation of lit elements. this is then used to pass the values to the component in a reactive way.
+- addTodo: A function that will add a todo to the list. It takes a todo as an argument and adds it to the list of todos. This should work like you would expect in ReactJS.
 
+Note: We introduce the tag of the component we want to use in the scope of the component. It becomes available is use after configuring `useScope`. You will ntoice that we are passing the `addTodo` function as a prop inside an attribute `.props` to the `add-item-form` component. Web components do not allow for passing functions as props, so we have to pass it as an attribute and then use it inside the component. When using Dim you can pass a function as a prop by using the `.props` attribute. If we take a look at lit elements, it automatically creates watchers for the props as defined in its static property [as described here](https://lit.dev/docs/components/properties/). This means if we use props like normal, the component wont be able to listen for changes. For Dim, there is a property `.props` that will be used to watch for changes in the undelying implementation of lit elements. You should be able to use this for all use cases or you can fallback to the default Lit functionality for setting attributes. The value of the `props` object is then used to pass the values to the component.
 
-now lets create a list of todos.
+---
+
+## The Todo list
+
+Now lets create a list of todos.
 
 ```javascript
 import ListItem from "./ListItem.js";
@@ -222,19 +251,21 @@ const TodoList = ({ todos, onRemove }, { useScope, useEffect, html }) => {
 export default TodoList;
 ```
 
-here we see a more complicated component. so lets break it down
+Lets break it down:
 
-props: we are passing the todos and onRemove function as props to the component. this is a way to pass data to the component. we are also passing a function to remove a todo from the list. this is a way to pass functions to the component.
+- props: we are passing the todos and onRemove function as props to the component.
 
-useScope: this is a hook that allows us to introduce components to the scope of the component. this is a way to share components between components.
+- useScope: This is a hook that allows us to introduce other dim components to the scope of the component. This is a way to create reusable web components.
 
-useEffect: this is a hook that allows us to run side effects in the component. it takes a function and an array of dependencies. if the dependencies change, the function will be called again. this is a way to run side effects in the component. in this example it is used to log when the todos change. in a "real-world" example, this could be used to do more side effects.
+- useEffect: This is a hook that allows us to run side effects in the component. It takes a function and an array of dependencies. If the dependencies change, the function will be called again. In this example, it is used to log when the todos change. 
 
-rendering: we are rendering a list of todos. we are using the map function to render a list of todos. we are also passing the todo and onRemove function as props to the `list-item` component. this is a way to pass data to the component. we are also passing a function to remove a todo from the list. notice that we are using the `.props` attribute to pass the props to the component.
+- rendering: We are rendering a list of todos. We can use the Array map function to render a list of todos. We are also passing the todo and onRemove function as props to the `list-item` component. This is a way to pass data to the component. Notice that we are using the `.props` attribute to pass the props to the component.
 
+---
 
+## The Todo list item
 
-now lets create the todo list item.
+Now lets create the todo list item.
 
 ```javascript
 const ListItem = ({ todo, onRemove }, { useEffect, html }) => {
@@ -256,17 +287,17 @@ const ListItem = ({ todo, onRemove }, { useEffect, html }) => {
 export default ListItem;
 ```
 
-this compoent should now seem reletively simple. but lets break it down for clarity.
+this compoent should now seem reletively simple. But lets break it down for clarity.
 
-props: we are passing the todo and onRemove function as props to the component.
+- useEffect: This is a hook that allows us to run side effects in the component. It takes a function and an array of dependencies. If the dependencies change, the function will be called again. In this example, it is used to log when the component is mounted and unmounted.
 
-useEffect: this is a hook that allows us to run side effects in the component. it takes a function and an array of dependencies. if the dependencies change, the function will be called again. this is a way to run side effects in the component. in this example it is used to log when the component mounts and unmounts.
+- rendering: We are rendering a list item with a todo and a button to remove the todo. An event listener is added to the button to handle the remove event. The onRemove function is called when the button is clicked. This is a way to pass data to the component.
 
-rendering: we are rendering a todo item. we are rendering the todo and a button to remove the todo. we are also adding an event listener to the button to call the onRemove function. this is a way to remove the todo from the list.
+---
 
+## Putting it all together
 
-
-now lets introduce the todo list to the todo list component.
+Now lets introduce the todo list to the todo component.
 
 ```javascript
 import { html, css } from "./mini-lit.js";
@@ -312,11 +343,24 @@ define({
 });
 ```
 
-rendering: we are rendering the todo list component. we are passing the todos and onRemove function as props to the component. this is a way to pass data to the component. we are also passing a function to remove a todo from the list. notice that we are using the `.props` attribute to pass the props to the component.
+Lets break it down:
 
-shared dependencies: its important to note the all the components down the tree will be able to use the hooks we define in the shared dependencies. you should note that useStyle and useEffect are in the dependencies, but unused in the todo component. you should take note of this when using the hooks in the components. Be sure to include the hooks you need if a component needs it to work correctly.
+- rendering: We are rendering the todo list component. We pass the todos and onRemove function as props to the component. This is a way to pass data to the component. we also pass a function to remove a todo-item from the list.
 
+- shared dependencies: its important to note the all the components down the tree will be able to use the hooks we define in the shared dependencies. you should note that useStyle and useEffect are in the dependencies, but unused in the todo component. you should take note of this when using the hooks in the components. Be sure to include the hooks you need if a component needs it to work correctly.
+
+---
+
+## Future considerations
+
+I would like to aim to remove all dependencies from Lit. It currently uses LitElement under-the-hood because of the convinient rendering and watchers. I would like to see if we can create a similar functionality without the need for Lit. This would allow us to create a more lightweight library that can be used in any project. I would also like to see if we can serialize functions to strings in a way that we can use them in vanillaJS module federation. This would allow us to create a more modular web application. I would also like to see if we can create a way to share dependencies between components in a more functional way. This would allow us to create more reusable components.
+
+---
 
 ## Conclusion
 
-In this article, we explored the creation of a functional web components-based Todo list application. By leveraging hooks and shared dependencies, we demonstrated how to manage state, encapsulate styles, and create reusable components. This approach not only simplifies the development process but also promotes code reusability and maintainability. As you continue to experiment with functional web components, you can extend this example to build more complex and feature-rich web applications. Happy coding!
+Im interested to hear what you think about this approach. I dont recomend using this approach to create any production ready applications. This is more of an experiment to see if we can create a more functional way of creating web components. I think its nearing a level for me to try refactoring some of my other work to use this approach. As i created the todo list, i found that it was a learning experience and i had to make some changes to the way. Im sure there are more changes that can be made to make it better. I would like to hear your thoughts on this approach and if you think it could be improved in any way.
+
+- [Checkout the GitHub repository for the code](https://github.com/positive-intentions/dim)
+
+- [There is a demo app you can try out](https://dim.positive-intentions.com)
