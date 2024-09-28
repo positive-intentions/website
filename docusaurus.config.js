@@ -302,6 +302,7 @@ const config = {
     mermaid: true,
   },
   themes: ['@docusaurus/theme-mermaid'],
+  clientModules: [require.resolve('./static/js/hydroAds.js')],
 };
 
 module.exports = config;
