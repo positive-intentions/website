@@ -303,12 +303,12 @@ const config = {
   },
   themes: ['@docusaurus/theme-mermaid'],
   clientModules: [
-    // require.resolve(
-    //   './static/js/journeyAds.js',
-    // ),
     require.resolve(
-      './static/js/tagManager.js',
+      './static/js/journeyAds.js',
     ),
+    // require.resolve(
+    //   './static/js/tagManager.js',
+    // ),
   ],
 };
 
