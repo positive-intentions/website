@@ -5,7 +5,7 @@ import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
 export const HeadScript = function () {
     const { siteConfig, i18n } = useDocusaurusContext();
 
-    useEffect(function() {
+    // useEffect(function() {
         // // add script to head
         // var head = window.document.getElementsByTagName('head')[0];
         // var script = document.createElement('script');
