@@ -245,7 +245,8 @@ const config = {
               },
               {
                 label: 'Mastodon',
-                href: 'https://mastodon.social/@xoron',
+                href: 'https://infosec.exchange/@xoron',
+                rel: 'me',
               },
               {
                 label: 'Lemmy',
