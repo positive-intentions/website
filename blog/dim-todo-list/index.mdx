@@ -37,20 +37,13 @@ Following the [previous article](https://positive-intentions.com/blog/dim-functi
 
 A Todo list app is a good example of how to demonstrate the functionality of the library. We will create a todo list app using the functional web components we created in the previous article. We will use the hooks we created to manage the state of the todo list. We will create a todo list component that will render a list of todos. We will use what we created in the previous article to render the todo list.
 
-You will need an HTML page to import the script and use the component.
-
-```html
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <title>Todo App</title>
-    <script type="module" src="./todo.js"></script>
-</head>
-<body>
-    <todo-app></todo-app>
-</body>
-</html>
-```
+<iframe
+    src="https://dim.positive-intentions.com"
+    style={{
+        width: '100%',
+        height: '500px'
+    }}
+></iframe>
 
 ---
 
@@ -253,11 +246,11 @@ export default TodoList;
 
 Lets break it down:
 
-- props: we are passing the todos and onRemove function as props to the component.
+- `.props`: we are passing the todos and onRemove function as props to the component.
 
-- useScope: This is a hook that allows us to introduce other dim components to the scope of the component. This is a way to create reusable web components.
+- `useScope`: This is a hook that allows us to introduce other dim components to the scope of the component. This is a way to create reusable web components.
 
-- useEffect: This is a hook that allows us to run side effects in the component. It takes a function and an array of dependencies. If the dependencies change, the function will be called again. In this example, it is used to log when the todos change. 
+- `useEffect`: This is a hook that allows us to run side effects in the component. It takes a function and an array of dependencies. If the dependencies change, the function will be called again. In this example, it is used to log when the todos change. 
 
 - rendering: We are rendering a list of todos. We can use the Array map function to render a list of todos. We are also passing the todo and onRemove function as props to the `list-item` component. This is a way to pass data to the component. Notice that we are using the `.props` attribute to pass the props to the component.
 
@@ -287,9 +280,9 @@ const ListItem = ({ todo, onRemove }, { useEffect, html }) => {
 export default ListItem;
 ```
 
-this compoent should now seem reletively simple. But lets break it down for clarity.
+This component should now seem relatively simple, but lets break it down for clarity.
 
-- useEffect: This is a hook that allows us to run side effects in the component. It takes a function and an array of dependencies. If the dependencies change, the function will be called again. In this example, it is used to log when the component is mounted and unmounted.
+- `useEffect`: This is a hook that allows us to run side effects in the component. It takes a function and an array of dependencies. If the dependencies change, the function will be called again. In this example, it is used to log when the component is mounted and unmounted.
 
 - rendering: We are rendering a list item with a todo and a button to remove the todo. An event listener is added to the button to handle the remove event. The onRemove function is called when the button is clicked. This is a way to pass data to the component.
 
@@ -353,7 +346,9 @@ Lets break it down:
 
 ## Future considerations
 
-I would like to aim to remove all dependencies from Lit. It currently uses LitElement under-the-hood because of the convinient rendering and watchers. I would like to see if we can create a similar functionality without the need for Lit. This would allow us to create a more lightweight library that can be used in any project. I would also like to see if we can serialize functions to strings in a way that we can use them in vanillaJS module federation. This would allow us to create a more modular web application. I would also like to see if we can create a way to share dependencies between components in a more functional way. This would allow us to create more reusable components.
+- Remove all dependencies from Lit. It currently uses LitElement under-the-hood because of the convinient rendering, props, event listenders and state cacheing. I would like to see if we can create a similar functionality without the need for Lit. This would allow us to create a more lightweight library that can be used in any project.
+- We can serialize functions to strings in a way that we can use them in vanillaJS module federation. This would allow us to create a more modular web application. I would also like to see if we can create a way to share dependencies between components in a more functional way. This would allow us to create more reusable components.
+- Align the html template transformer to be more react like. this would be for things like supporting self-closing brackets, which web components do not support out-of-the-box.
 
 ---
 
